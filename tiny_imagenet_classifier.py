@@ -7,7 +7,8 @@ Gets to 99.25% test accuracy after 12 epochs
 
 from __future__ import print_function
 import numpy as np
-from scipy import misc
+import os
+from PIL import Image
 np.random.seed(1337)  # for reproducibility
 
 from keras.datasets import mnist
@@ -20,6 +21,20 @@ batch_size = 128
 nb_classes = 200
 nb_epoch = 12
 
+X_train=np.zeros([200*500,3,64,64],dtype='uint8')
+
+sPath='./tiny-imagenet-200/train'
+i=0
+for sChild in os.listdir(sPath):
+    sChildPath = os.path.join(os.path.join(sPath,sChild),'images')
+    for c in os.listdir(sChildPath):
+        X=np.array(Image.open(os.path.join(sChildPath,c)))
+        if len(np.shape(X))==2:
+            X_train[i]=np.array([X,X,X])
+        else:
+            X_train[i]=np.transpose(X,(2,0,1))
+        i+=1
+
 # input image dimensions
 img_rows, img_cols = 64, 64
 # number of convolutional filters to use
@@ -29,9 +44,11 @@ nb_pool = 2
 # convolution kernel size
 nb_conv = 3
 
-todo 
-make X_train, zero initialize 
-go into train
+
+#
+#todo
+#make X_train, zero initialize
+#go into train
 
 
 
