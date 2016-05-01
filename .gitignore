@@ -1,4 +1,8 @@
+tiny-imagenet-200/
+mnist.pkl.gz
+
 # Byte-compiled / optimized / DLL files
+
 __pycache__/
 *.py[cod]
 *$py.class
