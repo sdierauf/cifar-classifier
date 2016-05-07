@@ -60,7 +60,7 @@ X_test = np.zeros([200*500,3,64,64],dtype='uint8')
 y_test = np.zeros([200*500], dtype='uint16')
 
 
-println('loading test images...')
+print('loading test images...')
 
 i = 0
 testPath='./tiny-imagenet-200/val/images'
