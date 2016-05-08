@@ -26,9 +26,11 @@ from val_load import get_annotations_map
 batch_size = 128
 nb_classes = 200
 nb_epoch = 60
+classes_to_load = 10
+print('Training on ' + str(classes_to_load) + ' classes')
 
-X_train=np.zeros([200*500,3,64,64],dtype='uint8')
-y_train=np.zeros([200*500], dtype='uint8') #TODO See if works like this
+X_train=np.zeros([classes_to_load*500,3,64,64],dtype='uint8')
+y_train=np.zeros([classes_to_load*500], dtype='uint8') #TODO See if works like this
 
 trainPath='./tiny-imagenet-200/train'
 
@@ -50,14 +52,17 @@ for sChild in os.listdir(trainPath):
             X_train[i]=np.transpose(X,(2,0,1))
         y_train[i]=j
         i+=1
+    print('finished loading ' + str(j) + ' out of ' + str(classes_to_load) + ' classes')
     j+=1
+    if (j >= classes_to_load):
+        break
 
 print('finished loading training images')
 
 val_annotations_map = get_annotations_map()
 
-X_test = np.zeros([200*500,3,64,64],dtype='uint8')
-y_test = np.zeros([200*500], dtype='uint8')
+X_test = np.zeros([classes_to_load*500,3,64,64],dtype='uint8')
+y_test = np.zeros([classes_to_load*500], dtype='uint8')
 
 
 print('loading test images...')
@@ -65,15 +70,20 @@ print('loading test images...')
 i = 0
 testPath='./tiny-imagenet-200/val/images'
 for sChild in os.listdir(testPath):
-    sChildPath = os.path.join(testPath, sChild)
-    # print(sChildPath)
-    X=np.array(Image.open(sChildPath))
-    if len(np.shape(X))==2:
-        X_test[i]=np.array([X,X,X])
+    if val_annotations_map[sChild] in imagenetClass2TempIndex:
+        print(val_annotations_map[sChild] + ' in imagenetClass2TempIndex')
+        sChildPath = os.path.join(testPath, sChild)
+        # print(sChildPath)
+        X=np.array(Image.open(sChildPath))
+        if len(np.shape(X))==2:
+            X_test[i]=np.array([X,X,X])
+        else:
+            X_test[i]=np.transpose(X,(2,0,1))
+        y_test[i]=imagenetClass2TempIndex[val_annotations_map[sChild]]
+        i+=1
     else:
-        X_test[i]=np.transpose(X,(2,0,1))
-    y_test[i]=imagenetClass2TempIndex[val_annotations_map[sChild]]
-    i+=1
+        print(val_annotations_map[sChild] + ' not in imagenetClass2TempIndex')
+
 
 print('finished loading test images')
 
@@ -86,8 +96,7 @@ nb_pool = 2
 # convolution kernel size
 nb_conv = 3
 #
-nb_classes = 200
-
+nb_classes = min(classes_to_load, nb_classes)
 
 
 #the data, shuffled and split between train and test sets
@@ -130,7 +139,7 @@ model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
 
 
 
-score = model.evaluate(X_test, Y_test, verbose=0)
+score = model.evaluate(X_test, Y_test, verbose=1)
 print('Test score:', score[0])
 print('Test accuracy:', score[1])
 
