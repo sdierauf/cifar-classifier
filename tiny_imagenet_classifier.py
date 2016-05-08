@@ -28,7 +28,7 @@ nb_classes = 200
 nb_epoch = 60
 
 X_train=np.zeros([200*500,3,64,64],dtype='uint8')
-y_train=np.zeros([200*500], dtype='uint16') #TODO See if works like this
+y_train=np.zeros([200*500], dtype='uint8') #TODO See if works like this
 
 trainPath='./tiny-imagenet-200/train'
 
@@ -57,7 +57,7 @@ print('finished loading training images')
 val_annotations_map = get_annotations_map()
 
 X_test = np.zeros([200*500,3,64,64],dtype='uint8')
-y_test = np.zeros([200*500], dtype='uint16')
+y_test = np.zeros([200*500], dtype='uint8')
 
 
 print('loading test images...')
