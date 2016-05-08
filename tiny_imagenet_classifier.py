@@ -25,7 +25,7 @@ from val_load import get_annotations_map
 
 batch_size = 128
 nb_classes = 200
-nb_epoch = 12
+nb_epoch = 60
 
 X_train=np.zeros([200*500,3,64,64],dtype='uint8')
 y_train=np.zeros([200*500], dtype='uint16') #TODO See if works like this
