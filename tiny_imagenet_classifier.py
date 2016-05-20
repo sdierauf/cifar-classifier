@@ -26,11 +26,7 @@ from val_load import get_annotations_map
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-<<<<<<< HEAD
-num_classes_arr = [5]
-=======
-num_classes_arr = [50]
->>>>>>> 7afef2b2a896a25726296b3603912ceb5619d0b0
+num_classes_arr = [20]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
