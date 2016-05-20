@@ -201,7 +201,7 @@ for loss_function in loss_functions:
 
         # if loss_function is 'categorical_crossentropy':
         #     model.add(Activation('softmax'))
-        sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(loss=loss_function,
                       optimizer=sgd,
                       metrics=['accuracy'])
