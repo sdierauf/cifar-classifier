@@ -18,6 +18,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
+from keras.optimizers import SGD
 from plotter import Plotter
 
 #Custom
