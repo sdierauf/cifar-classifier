@@ -29,7 +29,7 @@ from val_load import get_annotations_map
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [5]
+num_classes_arr = [3]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -201,7 +201,7 @@ for loss_function in loss_functions:
 
         # if loss_function is 'categorical_crossentropy':
         #     model.add(Activation('softmax'))
-        sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(loss=loss_function,
                       optimizer=sgd,
                       metrics=['accuracy'])
