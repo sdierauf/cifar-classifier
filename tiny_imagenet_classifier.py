@@ -26,7 +26,7 @@ from val_load import get_annotations_map
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [8]
+num_classes_arr = [5]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -129,24 +129,32 @@ for loss_function in loss_functions:
 
         model = Sequential()
 
-        model.add(Convolution2D(nb_filters, nb_conv, nb_conv,
-                                border_mode='valid',
-                                input_shape=(3, img_rows, img_cols)))
+        model.add(Convolution2D(32, 3, 3, border_mode='same',
+                        input_shape=(3, img_rows, img_cols)))
         model.add(Activation('relu'))
-        model.add(Convolution2D(nb_filters, nb_conv, nb_conv))
+        model.add(Convolution2D(32, 3, 3))
         model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
+
+        model.add(Convolution2D(64, 3, 3, border_mode='same'))
+        model.add(Activation('relu'))
+        model.add(Convolution2D(64, 3, 3))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
         model.add(Flatten())
-        model.add(Dense(128))
+        model.add(Dense(512))
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
         model.add(Dense(nb_classes))
-        # model.add(Activation('softmax'))
+        if loss_function is 'categorical_crossentropy':
+            model.add(Activation('softmax'))
 
+        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(loss=loss_function,
-                      optimizer='adadelta',
+                      optimizer=sgd,
                       metrics=['accuracy'])
 
         fpath = 'loss-' + loss_function + '-' + str(num_classes)
