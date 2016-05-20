@@ -1,7 +1,10 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
+
 import numpy as np
 from six.moves import range
 

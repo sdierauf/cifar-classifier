@@ -26,7 +26,7 @@ from val_load import get_annotations_map
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [8]
+num_classes_arr = [50]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -143,7 +143,8 @@ for loss_function in loss_functions:
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
         model.add(Dense(nb_classes))
-        # model.add(Activation('softmax'))
+       	if loss_function is 'categorical_crossentropy':
+		model.add(Activation('softmax'))
 
         model.compile(loss=loss_function,
                       optimizer='adadelta',
@@ -153,7 +154,7 @@ for loss_function in loss_functions:
 
         model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
                   verbose=1, validation_data=(X_test, Y_test),
-                  callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=True)])
+                  callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
 
 
 
