@@ -153,14 +153,9 @@ for loss_function in loss_functions:
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
         model.add(Dense(nb_classes))
-<<<<<<< HEAD
+
         if loss_function is 'categorical_crossentropy':
             model.add(Activation('softmax'))
-=======
-       	if loss_function is 'categorical_crossentropy':
-		model.add(Activation('softmax'))
->>>>>>> 7afef2b2a896a25726296b3603912ceb5619d0b0
-
         sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(loss=loss_function,
                       optimizer=sgd,
