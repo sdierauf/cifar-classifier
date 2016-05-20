@@ -26,12 +26,15 @@ class Plotter(History):
     def on_epoch_end(self, epoch, logs={}):
         super(Plotter, self).on_epoch_end(epoch, logs)
         dv = self.params['do_validation']
-        sa = self.params['show_accuracy']
+        # print()
+        # print(self.params)
+        # print(vars(self))
+        sa = self.history['acc']
 
-        train_loss = self.loss
-        val_loss = self.validation_loss if dv else []
-        train_acc = self.accuracy if sa else []
-        val_acc = self.validation_accuracy if dv and sa else []
+        train_loss = self.history['loss']
+        val_loss = self.history['val_loss'] if dv else []
+        train_acc = self.history['acc']if sa else []
+        val_acc = self.history['val_acc'] if dv and sa else []
 
         self.plot_generator.update(epoch, train_loss, train_acc,
                                    val_loss, val_acc)

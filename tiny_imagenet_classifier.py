@@ -24,15 +24,24 @@ from plotter import Plotter
 from val_load import get_annotations_map
 
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
-num_classes_arr = [2]
-
+# num_classes_arr = [2, 5, 8]
+# num_classes_arr = [10, 100, 200]
+num_classes_arr = [8]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
+        print()
+        print()
+        print('===========================')
+        print('Testing: ' + loss_function + ' with ' + str(num_classes) + ' classes')
+        print('===========================')
+        print()
         batch_size = 128
         nb_classes = 200
-        nb_epoch = 60
+        nb_epoch = 10
         classes_to_load = num_classes
+        nb_classes = min(classes_to_load, nb_classes)
+
         print('Training on ' + str(classes_to_load) + ' classes')
 
         X_train=np.zeros([classes_to_load*500,3,64,64],dtype='uint8')
@@ -77,7 +86,7 @@ for loss_function in loss_functions:
         testPath='./tiny-imagenet-200/val/images'
         for sChild in os.listdir(testPath):
             if val_annotations_map[sChild] in imagenetClass2TempIndex:
-                print(val_annotations_map[sChild] + ' in imagenetClass2TempIndex')
+                # print(val_annotations_map[sChild] + ' in imagenetClass2TempIndex')
                 sChildPath = os.path.join(testPath, sChild)
                 # print(sChildPath)
                 X=np.array(Image.open(sChildPath))
@@ -103,7 +112,6 @@ for loss_function in loss_functions:
         # convolution kernel size
         nb_conv = 3
         #
-        nb_classes = min(classes_to_load, nb_classes)
 
 
         #the data, shuffled and split between train and test sets
@@ -135,13 +143,13 @@ for loss_function in loss_functions:
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
         model.add(Dense(nb_classes))
-        model.add(Activation('softmax'))
+        # model.add(Activation('softmax'))
 
         model.compile(loss=loss_function,
                       optimizer='adadelta',
                       metrics=['accuracy'])
 
-        fpath = 'loss' + loss_function + '-' + num_classes
+        fpath = 'loss-' + loss_function + '-' + str(num_classes)
 
         model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
                   verbose=1, validation_data=(X_test, Y_test),
