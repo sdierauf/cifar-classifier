@@ -27,9 +27,10 @@ from plotter import Plotter
 from val_load import get_annotations_map
 
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
+#loss_functions = ['hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [50]
+num_classes_arr = [20]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -39,7 +40,7 @@ for loss_function in loss_functions:
         print('Testing: ' + loss_function + ' with ' + str(num_classes) + ' classes')
         print('===========================')
         print()
-        batch_size = 128
+        batch_size = 64
         nb_classes = 200
         nb_epoch = 100
         classes_to_load = num_classes
@@ -133,7 +134,7 @@ for loss_function in loss_functions:
         model = Sequential()
         #conv-spatial batch norm - relu #1 
         model.add(ZeroPadding2D((2,2),input_shape=(3,64,64)))
-        model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
+        model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
         model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
         model.add(Activation('relu')) 
 
@@ -191,7 +192,7 @@ for loss_function in loss_functions:
 
         #Affine-spatial batch norm -relu #10 
         model.add(Flatten())
-        model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
+        model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-4,l2=1e-4)))
         model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
         model.add(Activation('relu')) 
         model.add(Dropout(0.5)) 
@@ -200,8 +201,8 @@ for loss_function in loss_functions:
         model.add(Dense(num_classes,activation='softmax',W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
         # if loss_function is 'categorical_crossentropy':
-        #     model.add(Activation('softmax'))
-        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+       # model.add(Activation('softmax'))
+        sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(loss=loss_function,
                       optimizer=sgd,
                       metrics=['accuracy'])
