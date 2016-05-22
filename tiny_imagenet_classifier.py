@@ -31,7 +31,7 @@ loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 #loss_functions = ['hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [5]
+num_classes_arr = [20]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -244,10 +244,10 @@ for loss_function in loss_functions:
 
         fpath = 'loss-' + loss_function + '-' + str(num_classes)
 
-        # model.fit_generator(datagen.flow(X_train, Y_train, batch_size=32),
-        #             samples_per_epoch=len(X_train), nb_epoch=nb_epoch,
-        #             verbose=1, validation_data=(X_test, Y_test),
-        #             callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
+        #model.fit_generator(datagen.flow(X_train, Y_train, batch_size=32),
+         #            samples_per_epoch=len(X_train), nb_epoch=nb_epoch,
+          #           verbose=1, validation_data=(X_test, Y_test),
+           #          callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
 
         model.fit(X_train, Y_train, batch_size=64, nb_epoch=nb_epoch,
                   verbose=1, validation_data=(X_test, Y_test),
