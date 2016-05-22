@@ -21,6 +21,7 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2
 from keras.layers.normalization import BatchNormalization 
 from keras.utils import np_utils
 from keras.optimizers import SGD
+from keras.preprocessing.image import ImageDataGenerator
 from plotter import Plotter
 
 #Custom
@@ -30,7 +31,7 @@ loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
 #loss_functions = ['hinge']
 # num_classes_arr = [2, 5, 8]
 # num_classes_arr = [10, 100, 200]
-num_classes_arr = [20]
+num_classes_arr = [5]
 for loss_function in loss_functions:
     for num_classes in num_classes_arr: # num classes loop
 
@@ -130,11 +131,21 @@ for loss_function in loss_functions:
         Y_train = np_utils.to_categorical(y_train, nb_classes)
         Y_test = np_utils.to_categorical(y_test, nb_classes)
 
+        # generate flips etc of the images
+        datagen = ImageDataGenerator(
+            featurewise_center=True,
+            featurewise_std_normalization=True,
+            rotation_range=20,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            horizontal_flip=True,
+            vertical_flip=True)
+        datagen.fit(X_train)
 
         model = Sequential()
         #conv-spatial batch norm - relu #1 
         model.add(ZeroPadding2D((2,2),input_shape=(3,64,64)))
-        model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
+        model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
         model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
         model.add(Activation('relu')) 
 
@@ -209,9 +220,14 @@ for loss_function in loss_functions:
 
         fpath = 'loss-' + loss_function + '-' + str(num_classes)
 
-        model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-                  verbose=1, validation_data=(X_test, Y_test),
-                  callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
+        model.fit_generator(datagen.flow(X_train, Y_train, batch_size=32),
+                    samples_per_epoch=len(X_train), nb_epoch=nb_epoch,
+                    verbose=1, validation_data=(X_test, Y_test),
+                    callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
+
+        # model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
+        #           verbose=1, validation_data=(X_test, Y_test),
+        #           callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
 
 
 
