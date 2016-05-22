@@ -133,14 +133,14 @@ for loss_function in loss_functions:
 
         # generate flips etc of the images
         datagen = ImageDataGenerator(
-            featurewise_center=True,
-            featurewise_std_normalization=True,
+            # featurewise_center=True,
+            # featurewise_std_normalization=True,
             rotation_range=20,
             width_shift_range=0.2,
             height_shift_range=0.2,
             horizontal_flip=True,
             vertical_flip=True)
-        datagen.fit(X_train)
+        # datagen.fit(X_train)
 
         model = Sequential()
         #conv-spatial batch norm - relu #1 
@@ -203,7 +203,7 @@ for loss_function in loss_functions:
 
         #Affine-spatial batch norm -relu #10 
         model.add(Flatten())
-        model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-4,l2=1e-4)))
+        model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
         model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
         model.add(Activation('relu')) 
         model.add(Dropout(0.5)) 
