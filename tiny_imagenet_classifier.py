@@ -69,7 +69,12 @@ for loss_function in loss_functions:
                 if len(np.shape(X))==2:
                     X_train[i]=np.array([X,X,X])
                 else:
-                    X_train[i]=np.transpose(X,(2,0,1))
+                    # print(X.shape)
+                    # p = 0
+                    for d in range(3):
+                        for w in range(64):
+                            for h in range(64):
+                                X_train[i][d][w][h] = X[w][h][d]
                 y_train[i]=j
                 i+=1
             # print('finished loading ' + str(j) + ' out of ' + str(classes_to_load) + ' classes')
@@ -98,7 +103,11 @@ for loss_function in loss_functions:
                 if len(np.shape(X))==2:
                     X_test[i]=np.array([X,X,X])
                 else:
-                    X_test[i]=np.transpose(X,(2,0,1))
+                    for d in range(3):
+                        for w in range(64):
+                            for h in range(64):
+                                X_test[i][d][w][h] = X[w][h][d]
+
                 y_test[i]=imagenetClass2TempIndex[val_annotations_map[sChild]]
                 i+=1
             else:
@@ -144,97 +153,97 @@ for loss_function in loss_functions:
 
         model = Sequential()
 # ======================
-        # model.add(Convolution2D(64, 3, 3, border_mode='same',
-        #                         input_shape=(3, img_rows, img_cols)))
-        # model.add(Activation('relu'))
-        # model.add(Convolution2D(64, 3, 3))
-        # model.add(Activation('relu'))
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Dropout(0.25))
+        model.add(Convolution2D(64, 3, 3, border_mode='same',
+                                input_shape=(3, img_rows, img_cols)))
+        model.add(Activation('relu'))
+        model.add(Convolution2D(64, 3, 3))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
 
-        # model.add(Convolution2D(64, 3, 3, border_mode='same'))
-        # model.add(Activation('relu'))
-        # model.add(Convolution2D(64, 3, 3))
-        # model.add(Activation('relu'))
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Dropout(0.25))
+        model.add(Convolution2D(64, 3, 3, border_mode='same'))
+        model.add(Activation('relu'))
+        model.add(Convolution2D(64, 3, 3))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
 
-        # model.add(Flatten())
-        # model.add(Dense(512))
-        # model.add(Activation('relu'))
-        # model.add(Dropout(0.5))
-        # model.add(Dense(nb_classes))
-        # model.add(Activation('softmax'))
+        model.add(Flatten())
+        model.add(Dense(512))
+        model.add(Activation('relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(nb_classes))
+        model.add(Activation('softmax'))
 # ======================
 
 
-        #conv-spatial batch norm - relu #1 
-        model.add(ZeroPadding2D((2,2),input_shape=(3,64,64)))
-        model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #1 
+        # model.add(ZeroPadding2D((2,2),input_shape=(3,64,64)))
+        # model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
 
-        #conv-spatial batch norm - relu #2
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(64,3,3,subsample=(1,1)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #2
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(64,3,3,subsample=(1,1)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
 
-        #conv-spatial batch norm - relu #3
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(128,3,3,subsample=(2,2)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
-        model.add(Dropout(0.25)) 
+        # #conv-spatial batch norm - relu #3
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(128,3,3,subsample=(2,2)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
+        # model.add(Dropout(0.25)) 
 
-        #conv-spatial batch norm - relu #4
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(128,3,3,subsample=(1,1)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #4
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(128,3,3,subsample=(1,1)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
 
-        #conv-spatial batch norm - relu #5
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(256,3,3,subsample=(2,2)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #5
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(256,3,3,subsample=(2,2)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
 
-        #conv-spatial batch norm - relu #6
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(256,3,3,subsample=(1,1)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
-        model.add(Dropout(0.25))
+        # #conv-spatial batch norm - relu #6
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(256,3,3,subsample=(1,1)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
+        # model.add(Dropout(0.25))
 
-        #conv-spatial batch norm - relu #7
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(512,3,3,subsample=(2,2)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #7
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(512,3,3,subsample=(2,2)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
 
-        #conv-spatial batch norm - relu #8
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(512,3,3,subsample=(1,1)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
+        # #conv-spatial batch norm - relu #8
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(512,3,3,subsample=(1,1)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
         
 
-        #conv-spatial batch norm - relu #9
-        model.add(ZeroPadding2D((1,1)))
-        model.add(Convolution2D(1024,3,3,subsample=(2,2)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu'))
-        model.add(Dropout(0.25)) 
+        # #conv-spatial batch norm - relu #9
+        # model.add(ZeroPadding2D((1,1)))
+        # model.add(Convolution2D(1024,3,3,subsample=(2,2)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu'))
+        # model.add(Dropout(0.25)) 
 
-        #Affine-spatial batch norm -relu #10 
-        model.add(Flatten())
-        model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
-        model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-        model.add(Activation('relu')) 
-        model.add(Dropout(0.5)) 
+        # #Affine-spatial batch norm -relu #10 
+        # model.add(Flatten())
+        # model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
+        # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
+        # model.add(Activation('relu')) 
+        # model.add(Dropout(0.5)) 
 
-        #affine layer w/ softmax activation added 
-        model.add(Dense(num_classes,activation='softmax',W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
+        # #affine layer w/ softmax activation added 
+        # model.add(Dense(num_classes,activation='softmax',W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
         # if loss_function is 'categorical_crossentropy':
        # model.add(Activation('softmax'))
