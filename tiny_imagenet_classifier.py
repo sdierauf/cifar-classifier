@@ -46,7 +46,7 @@ for loss_function in loss_functions:
 
     batch_size = 32
     nb_classes = 10
-    nb_epoch = 200
+    nb_epoch = 100
     data_augmentation = True
 
     # input image dimensions
@@ -72,9 +72,9 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     model.add(Convolution2D(96, 3, 3, border_mode='same'))
     model.add(Activation('relu'))
-    model.add(Convolution2D(96, 3, 3, border_mode='same'))
+    model.add(Convolution2D(96, 3, 3, border_mode='same', subsample=(2, 2)))
     model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2)))
+
    
     # model.add(Convolution2D(96, 3, 3, border_mode='same', subsample=(2,2)))
     # model.add(Activation('relu'))
@@ -83,10 +83,8 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     model.add(Convolution2D(192, 3, 3, border_mode='same'))
     model.add(Activation('relu'))
-    model.add(Convolution2D(192, 3, 3, border_mode='same'))
+    model.add(Convolution2D(192, 3, 3, border_mode='same', subsample=(2, 2)))
     model.add(Activation('relu'))
-
-    model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2)))
 
 
     # model.add(Convolution2D(192, 3, 3, border_mode='same', subsample=(2,2)))
@@ -100,9 +98,9 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th')
     model.add(Flatten())
-    model.add(Dense(512))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    # model.add(Dense(512))
+    # model.add(Activation('relu'))
+    # model.add(Dropout(0.5))
     model.add(Dense(10))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
     # model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th'))
