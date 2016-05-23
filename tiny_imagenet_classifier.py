@@ -190,8 +190,11 @@ for loss_function in loss_functions:
     model.add(Convolution2D(192, 1, 1, border_mode='same'))
     model.add(Activation('relu'))
     model.add(Convolution2D(10, 1, 1, border_mode='same'))
-    model.add(Activation('relu'))
+    AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th')
+    # model.add(Activation('relu'))
     model.add(Flatten())
+    # model.add(Dense(512))
+    # model.add(Activation('relu'))
     model.add(Dense(10))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
     # model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th'))
