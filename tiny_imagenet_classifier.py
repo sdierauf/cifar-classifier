@@ -194,7 +194,7 @@ for loss_function in loss_functions:
 
 
     #conv-spatial batch norm - relu #1 
-    model.add(ZeroPadding2D((2,2),input_shape=(3,64,64)))
+    model.add(ZeroPadding2D((2,2),input_shape=(3,32,32)))
     model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
     model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
     model.add(Activation('relu')) 
