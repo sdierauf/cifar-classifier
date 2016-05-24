@@ -104,7 +104,7 @@ for loss_function in loss_functions:
     model.add(Dense(10))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
     # model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th'))
-    if loss_function is categorical_crossentropy:
+    if loss_function is 'categorical_crossentropy':
         model.add(Activation('softmax'))
 
 
