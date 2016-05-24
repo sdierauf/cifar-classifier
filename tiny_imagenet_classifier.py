@@ -96,7 +96,7 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     model.add(Convolution2D(10, 1, 1, border_mode='same'))
     model.add(Activation('relu'))
-    model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th'))
+    model.add(MaxPooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th'))
     model.add(Flatten())
     # model.add(Dense(512))
     # model.add(Activation('relu'))
