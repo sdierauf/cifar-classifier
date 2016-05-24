@@ -96,7 +96,7 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     model.add(Convolution2D(10, 1, 1, border_mode='same'))
     model.add(Activation('relu'))
-    AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th')
+    model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th'))
     model.add(Flatten())
     # model.add(Dense(512))
     # model.add(Activation('relu'))
@@ -104,7 +104,8 @@ for loss_function in loss_functions:
     model.add(Dense(10))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
     # model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th'))
-    model.add(Activation('softmax'))
+    if loss_function is categorical_crossentropy:
+        model.add(Activation('softmax'))
 
 
 # ======================
