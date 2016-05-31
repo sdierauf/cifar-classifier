@@ -29,10 +29,6 @@ from plotter import Plotter
 from val_load import get_annotations_map
 
 loss_functions = ['categorical_crossentropy', 'hinge', 'squared_hinge']
-#loss_functions = ['hinge']
-# num_classes_arr = [2, 5, 8]
-# num_classes_arr = [10, 100, 200]
-# num_classes_arr = [10]
 for loss_function in loss_functions:
     # for num_classes in num_classes_arr: # num classes loop
     num_classes = 10
@@ -74,10 +70,6 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
     model.add(Convolution2D(96, 3, 3, border_mode='same', subsample=(2, 2)))
     model.add(Activation('relu'))
-
-   
-    # model.add(Convolution2D(96, 3, 3, border_mode='same', subsample=(2,2)))
-    # model.add(Activation('relu'))
     
     model.add(Convolution2D(192, 3, 3, border_mode='same'))
     model.add(Activation('relu'))
@@ -87,122 +79,17 @@ for loss_function in loss_functions:
     model.add(Activation('relu'))
 
 
-    # model.add(Convolution2D(192, 3, 3, border_mode='same', subsample=(2,2)))
-    # model.add(Activation('relu'))
-
     model.add(Convolution2D(192, 3, 3, border_mode='same'))
     model.add(Activation('relu'))
     model.add(Convolution2D(192, 1, 1, border_mode='same'))
     model.add(Activation('relu'))
     model.add(Convolution2D(10, 1, 1, border_mode='same'))
     model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(6, 6), strides=None, border_mode='same', dim_ordering='th'))
     model.add(Flatten())
-    # model.add(Dense(512))
-    # model.add(Activation('relu'))
-    # model.add(Dropout(0.5))
     model.add(Dense(10))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
 
-    # model.add(AveragePooling2D(pool_size=(6, 6), strides=None, border_mode='valid', dim_ordering='th'))
-    if loss_function is 'categorical_crossentropy':
-        model.add(Activation('softmax'))
+    model.add(Activation('softmax'))
 
-
-# ======================
-    # model.add(Convolution2D(64, 3, 3, border_mode='same',
-    #                         input_shape=(3, img_rows, img_cols)))
-    # model.add(Activation('relu'))
-    # model.add(Convolution2D(64, 3, 3))
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Dropout(0.25))
-
-    # model.add(Convolution2D(64, 3, 3, border_mode='same'))
-    # model.add(Activation('relu'))
-    # model.add(Convolution2D(64, 3, 3))
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Dropout(0.25))
-
-    # model.add(Flatten())
-    # model.add(Dense(512))
-    # model.add(Activation('relu'))
-    # model.add(Dropout(0.5))
-    # model.add(Dense(nb_classes))
-    # model.add(Activation('softmax'))
-# ======================
-
-
-    # #conv-spatial batch norm - relu #1 
-    # model.add(ZeroPadding2D((2,2),input_shape=(3,32,32)))
-    # model.add(Convolution2D(64,5,5,subsample=(2,2),W_regularizer=WeightRegularizer(l1=1e-7,l2=1e-7)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-
-    # #conv-spatial batch norm - relu #2
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(64,3,3,subsample=(1,1)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-
-    # #conv-spatial batch norm - relu #3
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(128,3,3,subsample=(2,2)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-    # model.add(Dropout(0.25)) 
-
-    # #conv-spatial batch norm - relu #4
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(128,3,3,subsample=(1,1)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-
-    # #conv-spatial batch norm - relu #5
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(256,3,3,subsample=(2,2)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-
-    # #conv-spatial batch norm - relu #6
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(256,3,3,subsample=(1,1)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-    # model.add(Dropout(0.25))
-
-    # #conv-spatial batch norm - relu #7
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(512,3,3,subsample=(2,2)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-
-    # #conv-spatial batch norm - relu #8
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(512,3,3,subsample=(1,1)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-    
-
-    # #conv-spatial batch norm - relu #9
-    # model.add(ZeroPadding2D((1,1)))
-    # model.add(Convolution2D(1024,3,3,subsample=(2,2)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu'))
-    # model.add(Dropout(0.25)) 
-
-    # #Affine-spatial batch norm -relu #10 
-    # model.add(Flatten())
-    # model.add(Dense(512,W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))
-    # model.add(BatchNormalization(epsilon=1e-06, mode=0, axis=1, momentum=0.9))
-    # model.add(Activation('relu')) 
-    # model.add(Dropout(0.5)) 
-
-    # #affine layer w/ softmax activation added 
-    # model.add(Dense(num_classes,activation='softmax',W_regularizer=WeightRegularizer(l1=1e-5,l2=1e-5)))#pretrained weights assume only 100 outputs, we need to train this layer from scratch
-
-    # if loss_function is 'categorical_crossentropy':
-   # model.add(Activation('softmax'))
     sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(loss=loss_function,
                   optimizer=sgd,
@@ -229,16 +116,10 @@ for loss_function in loss_functions:
     fpath = 'loss-' + loss_function + '-' + str(num_classes)
     datagen.fit(X_train)
 
-
     model.fit_generator(datagen.flow(X_train, Y_train, batch_size=32),
                 samples_per_epoch=len(X_train), nb_epoch=nb_epoch,
                 verbose=1, validation_data=(X_test, Y_test),
                 callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
-
-    # model.fit(X_train, Y_train, batch_size=64, nb_epoch=nb_epoch,
-    #           verbose=1, validation_data=(X_test, Y_test),
-    #           callbacks=[Plotter(show_regressions=False, save_to_filepath=fpath, show_plot_window=False)])
-
 
 
     score = model.evaluate(X_test, Y_test, verbose=1)
